@@ -1,0 +1,54 @@
+{% extends "theater/layout.html" %}
+
+{% block body %}
+
+    <h1 style="text-align: center; padding-top: 5px;"> {{ user.username }}'s reservations </h1>
+
+    {% if page_obj|length == 0 %}
+        <h3 style="margin-left: 20px;">You haven't made any reservations. </h3>
+    {% else %}
+        {% for reservation in page_obj %}
+        <hr>
+        <div class="container">
+            <div class="row">
+                <div class="col-3 justify-content-center">
+                    <img src="{{ reservation.film.poster }}" alt="Film Poster" style="width: auto; height: 150px;">
+                </div>
+                <div class="col-3 justify-content-center">
+                    <h6 style="display: inline;">Reservation <h3 style="display: inline;">{{reservation.reservation_id}}</h3></h6>
+                    <h5 style="margin-top: 10px;">for <a href="{% url 'view_film' reservation.film.id %}" id="film_title"> {{reservation.film.title}} </a></h5>
+                </div>
+                <div class="col-3 justify-content-center">
+                    <div class="col-12 justify-content-center">
+                        <div class="seat" style="margin-top: 20px; margin-left: auto; margin-right: auto; display: table;"></div> 
+                        <div style=" justify-content: center;">
+                            <h5 style="word-break: break-all; text-align: center;"> {{reservation.seats_code}} </h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3 justify-content-center">
+                    <form action="{% url 'cancel_reservation_consumer' reservation.id %}">
+                        <button style="margin-left: auto; margin-right: auto; display: table; margin-top: 20px;" class="reservation_btn" id="cancel_res" name="{{reservation.film.id}}">Cancel reservation</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <nav aria-label="Page navigation example" style="margin-top: 40px;">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page=1" style="color: black; background-color: #9e9ea8; border-color: black;">&laquo; First</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}" style="color: black; background-color: #9e9ea8; border-color: black;"">&#8249; Prev</a></li>
+                {% endif %}
+                <span class="current">
+                    <li class="page-link" style="color: black; background-color: #9e9ea8; border-color: black;">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</li>
+                </span>
+                {% if page_obj.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}" style="color: black; background-color: #9e9ea8; border-color: black;">Next &#8250;</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" style="color: black; background-color: #9e9ea8; border-color: black;">Last &raquo;</a></li>           
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+{% endblock %}

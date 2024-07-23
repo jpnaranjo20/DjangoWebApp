@@ -1,0 +1,16 @@
+{% extends "theater/layout.html" %}
+
+{% block body %}
+
+<div id="new_film">
+        <h2>New Film</h2>
+        <form enctype="multipart/form-data" action="{% url 'create_film' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.as_p }}
+            </div>
+            <input type="submit" value="Create" name="create" class="make_reservation">
+        </form>
+    </div>
+
+{% endblock %}

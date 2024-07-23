@@ -1,0 +1,151 @@
+{% extends "theater/layout.html" %}
+
+{% block body %}
+
+<div id="reservation_page">
+
+    {% if user.is_admin %}
+    <h1 style="text-align: center; color: black; padding-top: 20px;"> Viewing reservations for {{ film.title }} </h1>
+    {% else %}
+    <h1 style="text-align: center; color: black; padding-top: 20px;"> Make a reservation for {{ film.title }} </h1>
+    {% endif %}
+
+    <ul class="showcase" style="color: black;">
+        <li>
+          <div class="seat showcase"></div>
+          <small>Available</small>
+        </li>
+        <li>
+          <div class="seat selected-showcase"></div>
+          <small>Selected</small>
+        </li>
+        <li>
+          <div class="seat occupied-showcase"></div>
+          <small>Occupied</small>
+        </li>
+    </ul>
+    
+    {% if user.is_admin %}
+    <div>Selected: <h4 style="display: inline-block;" id="count">0</h4></div>
+        {% if film.seats_available != 48 %}
+        <button style="display: inline-block;" class="reservation_btn" id="cancel_res" name="{{film.id}}">Cancel reservations</button>
+        {% else %}
+        <button style="display: none;" class="reservation_btn" id="cancel_res" name="{{film.id}}">Cancel reservations</button>
+        {% endif %}
+    {% else %}
+    <div>Selected: <h4 style="display: inline-block;" id="count">0</h4></div>
+    <button style="display: inline-block;" class="reservation_btn" id="res" name="{{film.id}}">Reserve!</button>
+    {% endif %}
+
+    <div id="reservation_msg_div">
+
+    </div>
+
+    <div style="padding-top: 10px;" id="cancel_res_picker">
+        <h4>Which reservation would you like to cancel?</h4>
+    </div>
+
+    <div class="container">
+
+        <div class="container-screen">
+            <div class="screen"></div>
+        </div>
+    
+        <div class="row_theater" id="A">
+            <div class="seat" id="0"> <p>A1</p> </div>
+            <div class="seat" id="1"> <p>A2</p> </div>
+
+            <div class="seat" id="2"> <p>A3</p> </div>
+            <div class="seat" id="3"> <p>A4</p> </div>
+            <div class="seat" id="4"> <p>A5</p> </div>
+            <div class="seat" id="5"> <p>A6</p> </div>
+
+            <div class="seat" id="6"> <p>A7</p> </div>
+            <div class="seat" id="7"> <p>A8</p> </div>
+        </div>
+    
+        <div class="row_theater" id="B">
+            <div class="seat" id="8"> <p>B1</p> </div>
+            <div class="seat" id="9"> <p>B2</p> </div>
+
+            <div class="seat" id="10"><p>B3</p></div>
+            <div class="seat" id="11"><p>B4</p></div>
+            <div class="seat" id="12"> <p>B5</p> </div>
+            <div class="seat" id="13"> <p>B6</p> </div>
+
+            <div class="seat" id="14"> <p>B7</p> </div>
+            <div class="seat" id="15"> <p>B8</p> </div>
+        </div>
+    
+        <div class="row_theater" id="C">
+            <div class="seat" id="16"> <p>C1</p> </div>
+            <div class="seat" id="17"><p>C2</p></div>
+
+            <div class="seat" id="18"><p>C3</p></div>
+            <div class="seat" id="19"><p>C4</p></div>
+            <div class="seat" id="20"><p>C5</p></div>
+            <div class="seat" id="21"><p>C6</p></div>
+
+            <div class="seat" id="22"><p>C7</p></div>
+            <div class="seat" id="23"><p>C8</p></div>
+        </div>
+    
+        <div class="row_theater" id="D">
+            <div class="seat" id="24"><p>D1</p></div>
+            <div class="seat" id="25"><p>D2</p></div>
+
+            <div class="seat" id="26"><p>D3</p></div>
+            <div class="seat" id="27"><p>D4</p></div>
+            <div class="seat" id="28"><p>D5</p></div>
+            <div class="seat" id="29"><p>D6</p></div>
+
+            <div class="seat" id="30"><p>D7</p></div>
+            <div class="seat" id="31"><p>D8</p></div>
+        </div>
+    
+        <div class="row_theater" id="E">
+            <div class="seat" id="32"><p>E1</p></div>
+            <div class="seat" id="33"><p>E2</p></div>
+
+            <div class="seat" id="34"><p>E3</p></div>
+            <div class="seat" id="35"><p>E4</p></div>
+            <div class="seat" id="36"><p>E5</p></div>
+            <div class="seat" id="37"><p>E6</p></div>
+
+            <div class="seat" id="38"><p>E7</p></div>
+            <div class="seat" id="39"><p>E8</p></div>
+        </div>
+    
+        <div class="row_theater" id="F">
+            <div class="seat" id="40"><p>F1</p></div>
+            <div class="seat" id="41"><p>F2</p></div>
+
+            <div class="seat" id="42"><p>F3</p></div>
+            <div class="seat" id="43"><p>F4</p></div>
+            <div class="seat" id="44"><p>F5</p></div>
+            <div class="seat" id="45"><p>F6</p></div>
+            
+            <div class="seat" id="46"><p>F7</p></div>
+            <div class="seat" id="47"><p>F8</p></div>
+        </div>
+
+        
+        
+        
+    </div>
+</div>
+
+<div style="display: inline;">
+    <table class="table table-dark table-borderless" style="margin-top: 0px;" id="seats_table">
+        <tr>
+            <td><h6 style="text-align: center;"> Reserved </h6></td>
+            <td><h6 id="seats_reserved"> {{ film.reserved_seats_amount }} </h6></td>
+        </tr>
+        <tr>
+            <td><h6 style="text-align: center;"> Available </h6></td>
+            <td><h6 id="seats_available"> {{ film.seats_available }} </h6></td>
+        </tr>    
+    </table>
+</div>
+
+{% endblock %}

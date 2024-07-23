@@ -1,0 +1,85 @@
+{% extends "theater/layout.html" %}
+
+{% block body %}
+
+    <h1 style="text-align: center; padding-top: 5px;">Now playing</h1>
+
+    {% if user.is_authenticated == False %}
+
+    <h3 style="text-align: center; padding-top: 5px;"> You're not authenticated! Try <a id="film_title" href="{% url 'login' %}">logging in</a> to make reservations!</h3>
+
+    {% endif %}
+
+    {% for film in page_obj %}
+        <hr>
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <h3 style="font-weight: bold;"> 
+                        <a href="{% url 'view_film' film.id %}" id="film_title">  {{ film.title }} ({{ film.year }}) </a>
+                    </h3>
+                    <h4 id="film_director"> 
+                        Directed by {{ film.director }}
+                    </h4>
+                    <br>
+                    <img src="{{ film.poster }}" alt="Film Poster" style="width: auto; height: 250px;">
+                </div>
+
+                <div class="col-6">
+                    <h4 class="imdb_rating" style="display: inline;"><i class="rating__star fas fa-star"></i> {{ film.imdb_rating }} </h4> <p style="display: inline; font-size: 1em;"> IMDB rating</p>
+                    <div class="alert alert-dark" role="alert" id="main_cast_div" style="margin-top: 10px;">
+                        <h5> <strong>Main cast:</strong> <br> <p style="padding-top: 5px;">{{ film.main_cast }}</p> </h5>    
+                    </div>
+                    <div class="alert alert-dark" role="alert" id="main_cast_div" style="margin-top: 10px;">
+                        <h5> <strong>Genre(s):</strong> <br> {{ film.genre }}</h5>
+                    </div>
+                    {% if user.is_authenticated and user.is_admin == False %}
+                    {% if film.seats_available != 0 %}
+                    <form action="{% url 'make_reservation' film.id %}">
+                        <input type="submit" class="make_reservation" value="Make a reservation!"/>
+                    </form>
+                    {% else %}
+                    <h4>Sorry, there are no available seats for this film. </h4>
+                    {% endif %}
+                    {% elif user.is_authenticated and user.is_admin %}
+                    <form action="{% url 'view_reservations' film.id %}" style="display: inline;">
+                        <input type="submit" class="make_reservation" value="View reservations" />
+                    </form>
+                    <form action="{% url 'remove_film' film.id %}" style="display: inline;">
+                        <input type="submit" class="make_reservation" value="Remove film" />
+                    </form>
+                    {% endif %}
+                    <table class="table table-dark table-borderless" style="margin-top: 20px;" id="seats_table">
+                        <tr>
+                            <td><h6 style="text-align: center;"> Reserved </h6></td>
+                            <td><h6> {{ film.reserved_seats_amount }} </h6></td>
+                        </tr>
+                        <tr>
+                            <td><h6 style="text-align: center;"> Available </h6></td>
+                            <td><h6> {{ film.seats_available }} </h6></td>
+                        </tr>    
+                    </table>
+                    
+                </div>
+            </div>
+        </div>
+
+    {% endfor %}
+
+    <nav aria-label="Page navigation example" style="margin-top: 40px;">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1" style="color: black; background-color: #9e9ea8; border-color: black;">&laquo; First</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}" style="color: black; background-color: #9e9ea8; border-color: black;"">&#8249; Prev</a></li>
+            {% endif %}
+            <span class="current">
+                <li class="page-link" style="color: black; background-color: #9e9ea8; border-color: black;">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</li>
+            </span>
+            {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}" style="color: black; background-color: #9e9ea8; border-color: black;">Next &#8250;</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" style="color: black; background-color: #9e9ea8; border-color: black;">Last &raquo;</a></li>           
+            {% endif %}
+        </ul>
+    </nav>
+
+{% endblock %}
