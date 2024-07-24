@@ -149,6 +149,6 @@ I believe this project satisfies the distinctiveness and complexity requirements
  
 
 # Additional information
-My web application is connected to an external API (found [here](https://rapidapi.com/auth/sign-up?referral=/marketplace)), whose description was already provided in the *How to run my application* section of this README). The API key is hardcoded into the ```views.py``` file found at ```https://github.com/me50/jpnaranjo20/blob/web50/projects/2020/x/capstone/theater/views.py```.
+My web application is connected to an external API (found [here](https://rapidapi.com/auth/sign-up?referral=/marketplace)), whose description was already provided in the *How to run my application* section of this README). The API key is hardcoded into the ```views.py``` file found at ```https://github.com/jpnaranjo20/DjangoWebApp/theater/views.py```.
 
 To create the view found at ```theater/templates/theater/reservation_page.html```, I guided myself using the HTML, CSS and JavaScript code found [here](https://code-projects.org/movie-seat-booking-in-javascript-with-source-code/). This code served ***only*** as a base for the code that you will find in this repository. Although it is similar, you'll see that it is not exactly the same and was used only as a guide to implement the functions I wanted for my web application.
